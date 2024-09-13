@@ -13,9 +13,13 @@ Method OnGetPDFFromS3(pRequest As Demo.Operations.PDF.PDFRequest, Output pRespon
     set tSc = $$$OK
 
     try {
-        set tPdf = ..GetPDFFromS3()
+        set tKeyIndex = pRequest.KeyIndex
 
-        set pResponse = ##class(Demo.Operations.PDF.PDFResponse).%New()
+        set tKey = $ZSTRIP($PIECE(..Key, ",", tKeyIndex), "<>W")
+
+        $$$TRACE("Key:"_tKey)
+
+        set tPdf = ..GetPDFFromS3(tKey)
 
         set tPdfRecord = ##class(Demo.PDFRecord).%New()
 
@@ -23,12 +27,22 @@ Method OnGetPDFFromS3(pRequest As Demo.Operations.PDF.PDFRequest, Output pRespon
 
         $$$ThrowOnError(tPdfRecord.%Save()) 
 
-
         set tPdfId = tPdfRecord.%Id()
 
-        set pResponse.Pdf = tPdfId
+
+        set pResponse = ##class(Demo.Operations.PDF.PDFResponse).%New()
+
+        set pResponse.PdfId = tPdfId
 
         set pResponse.PdfText = tPdf
+
+        set tNextKey = $ZSTRIP($PIECE(..Key, ",", tKeyIndex + 1), "<>W")
+
+        if (tNextKey '= "") {
+            set pResponse.NextKeyIndex = tKeyIndex + 1
+        } else {
+            set pResponse.NextKeyIndex = 0
+        }     
         
     } catch tEx {
         set tSc = tEx.AsStatus()
@@ -37,7 +51,7 @@ Method OnGetPDFFromS3(pRequest As Demo.Operations.PDF.PDFRequest, Output pRespon
     return tSc
 }
 
-Method GetPDFFromS3() As %SYS.Python [ Language = python ]
+Method GetPDFFromS3(pKey As %String) As %SYS.Python [ Language = python ]
 {
     from io import BytesIO
     from PyPDF2 import PdfReader
@@ -51,7 +65,7 @@ Method GetPDFFromS3() As %SYS.Python [ Language = python ]
         # Initialize a session using Amazon S3 with unsigned configuration
         s3 = boto3.client('s3', config=Config(signature_version=UNSIGNED))
 
-        response = s3.get_object(Bucket=self.Bucket,Key=self.Key)
+        response = s3.get_object(Bucket=self.Bucket,Key=pKey)
 
         reader = PdfReader(BytesIO(response['Body'].read()))
 

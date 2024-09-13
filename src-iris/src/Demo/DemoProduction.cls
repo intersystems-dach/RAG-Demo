@@ -8,7 +8,7 @@ XData ProductionDefinition
   <ActorPoolSize>2</ActorPoolSize>
   <Item Name="PDF Operation" Category="" ClassName="Demo.Operations.PDF.PDFOperation" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
     <Setting Target="Host" Name="Bucket">ragbucketdach</Setting>
-    <Setting Target="Host" Name="Key">Abble.pdf</Setting>
+    <Setting Target="Host" Name="Key">Abble.pdf,Logystics_Eng.pdf</Setting>
   </Item>
   <Item Name="Embedding Operation" Category="" ClassName="Demo.Operations.Embedding.EmbeddingOperation" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
     <Setting Target="Host" Name="ChunkOverlap">100</Setting>

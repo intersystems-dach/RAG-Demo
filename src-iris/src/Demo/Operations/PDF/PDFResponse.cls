@@ -1,21 +1,25 @@
 Class Demo.Operations.PDF.PDFResponse Extends (%Persistent, Ens.Response)
 {
 
-Property Pdf As %Integer;
+Property NextKeyIndex As %Integer;
+
+Property PdfId As %Integer;
 
 Property PdfText As %String(MAXLEN = "");
 
 Storage Default
 {
 <Data name="PDFResponseDefaultData">
-<Subscript>"PDFResponse"</Subscript>
 <Value name="1">
-<Value>Pdf</Value>
-</Value>
-<Value name="2">
 <Value>%%CLASSNAME</Value>
 </Value>
+<Value name="2">
+<Value>NextKeyIndex</Value>
+</Value>
 <Value name="3">
+<Value>PdfId</Value>
+</Value>
+<Value name="4">
 <Value>PdfText</Value>
 </Value>
 </Data>
