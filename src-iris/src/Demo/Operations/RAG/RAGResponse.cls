@@ -5,6 +5,8 @@ Property DocIds As %String;
 
 Property DocCount As %Integer;
 
+Property SQLInfo As %String(MAXLEN=5000);
+
 Storage Default
 {
 <Data name="RAGResponseDefaultData">

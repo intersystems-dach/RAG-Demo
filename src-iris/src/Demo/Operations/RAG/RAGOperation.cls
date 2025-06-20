@@ -41,6 +41,10 @@ Method OnRAG(pRequest As Demo.GenerateRequest, pResponse As Demo.Operations.RAG.
 
       set pResponse.DocCount = tRowCount
 
+      set status=$SYSTEM.SQL.Explain(tSql,{"all":0},,.plan)
+
+      set pResponse.SQLInfo = plan
+
     } catch ex {
         set tSc = ex.AsStatus()
     }

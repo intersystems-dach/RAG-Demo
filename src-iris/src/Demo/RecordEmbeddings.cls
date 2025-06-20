@@ -13,6 +13,8 @@ Property Embedding As %Vector(LEN = 384);
 
 Index idxDataSourceId On DataSourceId;
 
+Index HNSWIndex On (Embedding) As %SQL.Index.HNSW(Distance = "DotProduct") [ SqlName = HNSWIndex, Type = index ];
+
 Storage Default
 {
 <Data name="RecordEmbeddingsDefaultData">
